@@ -1,5 +1,7 @@
 # KotlinContracts
-**Plan**
+### Intro
+This is a template of how contracts should be and why. I do not say some general information about what contracts are because it is easy to be found in net.
+### Plan
 1. Purposes
   * Consider what functionality we want to have
       | Name                         | Description      |
