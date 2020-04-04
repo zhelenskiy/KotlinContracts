@@ -21,21 +21,35 @@ This is a template of how contracts should be and why. I do not say some general
       * It is better to throw some general exception because the failing assertion is not just an exceptive situation - it is a bug. Nevertheless, it should be possible to specify which exception to throw or what else to do on the failure. By default it should be some `ContractAssertionException : RuntimeException`
   * Place:
       * Inside the block
-      * **Outside of it** *<- I choose this one because the reader does not want to look inside the implementation to see something not connected with it such as contracts*
+      * **Outside of it** *<- It is better to choose this one because the reader does not want to look inside the implementation to see something not connected with it such as contracts*
   * Think about a possible syntax for the idea in consideration of already implemented contracts (listed at https://ru.wikipedia.org/wiki/Контрактное_программирование)
       * Special constructions for each type of contract -> so it is difficult to combine them
       * Contracts are written in the string (like in examples bellow) -> no highlighting, but the wider syntax is provided
       * Suggested (by me) syntax
-          1. There are special constructions for a contract in general, but infix functions are used to make it readable
+          1. Contracts are written with DSL. Each contract can be written with its own lambda with infix functions inside to unite constructions inside to make it more readable.
           2. So it is more like the second way, but with code instead of plain text.
-          3. `Contract` is a vararg function that takes some contracts and applies them to the block in some way (depends on the interface)  
-          4. 3 is just one of the possible implementations of what is given in 1. The main idea to consider is in 1.
+          3. You are able to write even complex `Kotlin` expressions.
+          4. Possible implementation usage:
+              * ```kotlin
+                Contract { null follows null, other follows newValue }
+                ```
+              * ```kotlin
+                Contract { x follows { if (it == null) then null else newValue } }
+                ```
+              * ```kotlin
+                Contract { x follows when (x) {
+                        is RandomAccess -> null
+                        is Integer -> newValue
+                        else -> fail
+                    }
+                }
+                ```
     * A very good article is given in `Useful links` paragraph
   * Add documentation generation based on the contracts
     * It would be great if `KDoc` could add contracts to the documentation (at least if it is marked as documentable, for example) because this would help the user to guess the behavior of methods
 2. Problems
   * Code duplication: contracts may repeat the body of the method (this can be a typical problem for complicated contracts).
-    * Example (Java):
+    * Example (`Java`):
     ```java
     import org.jetbrains.annotations.Contract;
     
@@ -62,8 +76,8 @@ This is a template of how contracts should be and why. I do not say some general
           }
       }
       ```
-      2. *With 2 examples*
-        * The opposite solution is to generate code by the given contract. Something like:
+      2. *With 3 examples*
+        * The opposite solution is to generate code by the given contract *(May be, only if annotated with something like `@Generative`)*. Something like:
           ```java
           import org.jetbrains.annotations.Contract;
           
@@ -89,6 +103,17 @@ This is a template of how contracts should be and why. I do not say some general
               }
           }
           ```
+        * We can modify `Kotlin` example given above *(before `problems` section)* to allow it to auto-generate code
+          * ```kotlin
+            Contract {
+                x follows when (x) {
+                    is RandomAccess -> null
+                    is Integer -> new Integer()
+                    else -> fail<IllegalArgumentException>()
+                }
+            }
+            ```
+        
       
 3. Reasons for lack of usage of contracts in other languages
     | Reason                          | Solution      |
