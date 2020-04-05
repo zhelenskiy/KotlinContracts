@@ -120,7 +120,7 @@ This is a template of how contracts should be and why. I do not say some general
     |---------------------------------|---------------|
     | Their compilation is slow       | It should be able to choose the level of checking (like `-O0`..`-O3`) |
     | Their execution overhead is big | Not really big, but the solution is the same with one in the previous line |
-    | False positives <ul><li>This can happen in complicated algorithm when it is impossible to prove correctness without knowledge of what algorithm it is</li> <li>For example, it is impossible to check that:<ul><li>The loop in binary search is finite</li> <li>The stored graph is a tree *(because of how it is built or because of specific input data)*, so dfs without checking that vertex is already used will end.</li></ul></li><ul>                | Customizable checks + supressings (as for usual warnings) |
+    | False positives <ul><li>This can happen in complicated algorithm when it is impossible to prove correctness without knowledge of what algorithm it is</li> <li>For example, it is impossible to check that:<ul><li>The loop in binary search is finite</li> <li>The stored graph is a tree *(because of how it is built or because of specific input data)*, so dfs without checking that vertex is already used will end.</li></ul></li><ul>                | Customizable checks + supressings (as for usual warnings, but with specifying the reason of that the contract condition is true here) |
     | No proper tools                 | Some big company such as `JetBrains` should create them |
 3. Useful links
   * https://ru.stackoverflow.com/questions/458342/Контрактное-программирование-code-contracts
